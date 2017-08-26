@@ -19,7 +19,7 @@ public class Juego
 {
     // Atributos
     private Personaje miPersonaje;
-    private Presentacion miPresentacion;
+    private PantallaPresentacion miPresentacion;
     private Nivel miNivel;
     private Marcador miMarcador;
 
@@ -43,7 +43,7 @@ public class Juego
         bool pantallaCompleta = false;
         Hardware.Inicializar(1024, 768, 24, pantallaCompleta);
 
-        miPresentacion = new Presentacion();
+        miPresentacion = new PantallaPresentacion();
         miPersonaje = new Personaje(this);
         miNivel = new Nivel1();
         miPersonaje.MoverA(miNivel.GetXSalida(), miNivel.GetYSalida());

@@ -1,5 +1,5 @@
 /* --------------------------------------------------         
-Presentacion: pantalla de presentaciÛn
+PantallaPresentacion: pantalla de presentaci√≥n
 Parte de Fruity Frank - Remake
 
 @see Hardware Juego Imagen
@@ -10,10 +10,12 @@ Versiones:
 Num.   Fecha       Por / Cambios
 ---------------------------------------------------
 0.30  01-Ago-2017  Nacho Cabanes
-                   Primera versiÛn 2017, casi idÈntica a la 0.21 de 2008
+                   Primera versi√≥n 2017, casi id√©ntica a la 0.21 de 2008
+0.31  25-Ago-2017  Renombrada de "Presentacion" a "PantallaPresentacion"
+                   Se puede cargar las pantallas de Ayuda, Records, Cr√©ditos
 ---------------------------------------------------- */
 
-public class Presentacion
+public class PantallaPresentacion
 {
     // Atributos
 
@@ -30,7 +32,7 @@ public class Presentacion
     // Operaciones
 
     /// Constructor
-    public Presentacion()
+    public PantallaPresentacion()
     {
         cartel = new ElemGrafico("imagenes/cartel.png");
         fuenteSans = new Fuente("FreeSansBold.ttf", 24);
@@ -47,6 +49,16 @@ public class Presentacion
     {
         salirPresentacion = false;
         salirDelJuego = false;
+
+        string[] textos = 
+        { "Pulsa: ",
+            " - ESPACIO para empezar",
+            " - A para Ayuda",
+            " - R para ver los Records",
+            " - C para Cr√©ditos",
+            " - S para Salir"
+        };
+
         while (!salirPresentacion)
         {
             if (Hardware.TeclaPulsada(Hardware.TECLA_ESP))
@@ -61,9 +73,14 @@ public class Presentacion
             }
             Hardware.BorrarPantallaOculta(0, 0, 0); // Borro en negro
             cartel.Dibujar(xCartel, yCartel);
-            Hardware.EscribirTextoOculta(
-              "Pulsa ESPACIO para empezar o S para salir",
-              210, 440, 0xFF, 0xAA, 0xAA, fuenteSans);
+            for (int i = 0; i < textos.Length; i++)
+            {
+                Hardware.EscribirTextoOculta(
+                    textos[i],
+                    410, (short) (400 + i*40), 
+                    (byte) (255-i*30), (byte)(255 - i * 30), 0x00, 
+                    fuenteSans);
+            }
             Hardware.VisualizarOculta();
 
             xCartel += incrXCartel;
@@ -86,6 +103,24 @@ public class Presentacion
             if (yCartel > Hardware.GetAlto() / 2 - altoCartel)
             {
                 incrYCartel = (short)-incrYCartel;
+            }
+
+            if (Hardware.TeclaPulsada(Hardware.TECLA_A))
+            {
+                PantallaAyuda miAyuda = new PantallaAyuda();
+                miAyuda.Ejecutar();
+            }
+
+            if (Hardware.TeclaPulsada(Hardware.TECLA_C))
+            {
+                PantallaCreditos creditos = new PantallaCreditos();
+                creditos.Ejecutar();
+            }
+
+            if (Hardware.TeclaPulsada(Hardware.TECLA_R))
+            {
+                PantallaRecords records = new PantallaRecords();
+                records.Ejecutar();
             }
 
             // Pausa de 20 ms, para velocidad de 50 fps (1000/20 = 50)
